@@ -1,4 +1,5 @@
 from pathlib import Path
+from django.utils.timezone import timedelta
 from dotenv import load_dotenv
 import os
 
@@ -16,10 +17,14 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-THIRD_PARTY_APPS = ["rest_framework", "corsheaders"]
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
+    "corsheaders",
+]
 
 # LOCAL_APPS = ["core_apps.users", "core_apps.chat"]
-LOCAL_APPS = []
+LOCAL_APPS = ["core_apps.users"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -112,11 +117,24 @@ REST_FRAMEWORK = {
     ],
     "PAGE_SIZE": 10,
 }
+AUTH_USER_MODEL = "users.User"
 
-DEBUG = os.getenv("DEBUG") == "True"
 
-if DEBUG:
-    from .local import *
+DEBUG = os.getenv("DEBUG", default=True)
+
+
+print(DEBUG)
+
+if DEBUG == "False":
+    from .prod import *
 
 else:
-    from .prod import *
+    from .local import *
+
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ROTATE_REFRESH_TOKENS": True,
+}
