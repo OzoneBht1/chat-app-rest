@@ -4,19 +4,18 @@ ENV PYTHONDONTWRITEBYTECODE=1
 
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /app/
+WORKDIR /app
 
-COPY requirements.txt .
+COPY requirements.txt /app/
 
 RUN pip install -r requirements.txt
 
-COPY . /app/ 
+COPY . /app
 
 RUN rm -rf ./scripts
 
 COPY ./scripts/start /start
 
 RUN chmod +x /start
-
 
 EXPOSE 8000:8000

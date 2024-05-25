@@ -1,27 +1,30 @@
 services:
   web:
-    volumes:
-     - .:/app 
-    restart: always
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     ports:
       - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       postgres:
-        condition : healthy
+        condition: service_healthy
     env_file:
       - .env
-    command: >
-      /start
+    command: python manage.py runserver 0.0.0.0:8000
+    networks:
+      - my_network
+    volumes:
+      - .:/app:z
 
   postgres:
-    image : postgres:latest
+    image: postgres:latest
     restart: always
     ports:
       - 5432:5432
-    volume:
+    volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -32,8 +35,12 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-
-
+    networks:
+      - my_network
 
 volumes:
   postgres_data:
+
+networks:
+  my_network:
+    driver: bridge
