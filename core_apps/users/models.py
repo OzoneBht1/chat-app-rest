@@ -13,3 +13,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = CustomUserManager()
+
+    @classmethod
+    def get_regular_users(cls):
+        return cls.objects.filter(is_staff=False)

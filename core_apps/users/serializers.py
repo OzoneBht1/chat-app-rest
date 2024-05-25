@@ -49,3 +49,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+class PublicUserInfoSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ("full_name",)
+
+    def get_full_name(self, obj: User):
+        return obj.get_full_name()

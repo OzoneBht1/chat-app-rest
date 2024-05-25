@@ -4,7 +4,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer
+from .serializers import RegisterSerializer, PublicUserInfoSerializer
 
 User = get_user_model()
 # Create your views here.
@@ -34,3 +34,14 @@ class LogoutView(APIView):
         token.blacklist()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserListApiView(generics.ListAPIView):
+    serializer_class = PublicUserInfoSerializer
+    # queryset = User.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_staff:
+            return User.objects.all()
+        return User.get_regular_users()
