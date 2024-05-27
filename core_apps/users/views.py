@@ -38,7 +38,6 @@ class LogoutView(APIView):
 
 class UserListApiView(generics.ListAPIView):
     serializer_class = PublicUserInfoSerializer
-    # queryset = User.objects.all()
 
     def get_queryset(self):
         user = self.request.user
