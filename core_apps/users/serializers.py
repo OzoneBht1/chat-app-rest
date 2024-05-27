@@ -15,6 +15,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         write_only=True, required=True, validators=[validate_password]
     )
     password2 = serializers.CharField(write_only=True, required=True)
+    username = serializers.CharField(required=True)
 
     class Meta:
         model = User
@@ -22,6 +23,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             "password",
             "password2",
             "email",
+            "username",
             "first_name",
             "last_name",
         )
@@ -36,6 +38,12 @@ class RegisterSerializer(serializers.ModelSerializer):
                 {"password": "Password fields didn't match."}
             )
 
+        user = User.objects.filter(username=attrs["username"])
+        if user.exists():
+            raise serializers.ValidationError(
+                {"username": "This username is already taken."}
+            )
+
         return attrs
 
     def create(self, validated_data):
@@ -43,6 +51,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data["email"],
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
+            username=validated_data["username"],
         )
 
         user.set_password(validated_data["password"])
@@ -52,11 +61,11 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class PublicUserInfoSerializer(serializers.ModelSerializer):
-    full_name = serializers.SerializerMethodField()
+    # full_name = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ("full_name",)
+        fields = ("id", "username", "email")
 
-    def get_full_name(self, obj: User):
-        return obj.get_full_name()
+    # def get_full_name(self, obj):
+    #     return obj.get_full_name()

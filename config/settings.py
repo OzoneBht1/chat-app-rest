@@ -8,7 +8,10 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+ASGI_APPLICATION = "config.asgi.application"
+
 DJANGO_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -23,8 +26,7 @@ THIRD_PARTY_APPS = [
     "corsheaders",
 ]
 
-# LOCAL_APPS = ["core_apps.users", "core_apps.chat"]
-LOCAL_APPS = ["core_apps.users"]
+LOCAL_APPS = ["core_apps.users", "core_apps.chat"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
