@@ -13,6 +13,13 @@ User = get_user_model()
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    """
+    ChatConsumer handles websocket connections for a chat application.
+
+    This consumer manages the websocket connection lifecycle (connect, receive, disconnect) and
+    handles messaging between users. It ensures that messages are sent to the correct channel
+    group and saved to the database.
+    """
 
     @database_sync_to_async
     def get_user_or_none(self, user_id: int) -> User | None:
@@ -65,6 +72,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         channel group. Also calls the save_message function which saves the message
         entry to the database.
         """
+
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         await self.channel_layer.group_send(

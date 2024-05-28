@@ -125,8 +125,6 @@ AUTH_USER_MODEL = "users.User"
 DEBUG = os.getenv("DEBUG", default=True)
 
 
-print(DEBUG)
-
 if DEBUG == "False":
     from .prod import *
 

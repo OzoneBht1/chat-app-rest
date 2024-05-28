@@ -37,6 +37,11 @@ class LogoutView(APIView):
 
 
 class UserListApiView(generics.ListAPIView):
+    """
+    An API to get a list of user's publicly available information
+    to select them for starting a chat conversation.
+    """
+
     serializer_class = PublicUserInfoSerializer
 
     def get_queryset(self):

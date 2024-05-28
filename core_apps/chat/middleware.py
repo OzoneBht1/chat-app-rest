@@ -7,11 +7,14 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 @database_sync_to_async
 def get_user(token_key: str):
+    """
+    Validate the JWT token to check for signature and expiry date,
+    and return user or anonymous user depending upon the token key's
+    validity
+    """
     try:
         jwt_object = JWTAuthentication()
-        print(jwt_object)
         validated_token = jwt_object.get_validated_token(token_key)
-        print(jwt_object)
         user = jwt_object.get_user(validated_token)
         return user
     except Exception:
