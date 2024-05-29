@@ -34,6 +34,11 @@ git clone https://github.com/OzoneBht1/chat-app-rest
 
 Once the Docker containers have been built and started successfully, you can access the application by navigating to http://localhost:8000 in your web browser.
 
+**ASGI Server**
+
+The application is served using the ASGI protocol, and it utilizes Daphne as the ASGI server for handling WebSocket connections.
+
+
 ## Rest API Documentation
 
 The application comes with Swagger UI integrated to easily explore and interact with the API endpoints. To access the API documentation, you can visit:
