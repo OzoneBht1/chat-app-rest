@@ -1,6 +1,5 @@
-from datetime import datetime, timedelta
-from tempfile import NamedTemporaryFile
 from .factories import (
+    ChatMessageFactory,
     UserFactory,
 )
 
@@ -10,6 +9,7 @@ from rest_framework.test import APIClient
 
 
 register(UserFactory)
+register(ChatMessageFactory)
 
 
 @pytest.fixture
@@ -29,6 +29,11 @@ def api_client(get_user):
     client = APIClient()
     client.force_authenticate(get_user)
     return client
+
+
+api_client2 = api_client
+# making a copy of the api client to use two authenticated
+# users in one function
 
 
 @pytest.fixture

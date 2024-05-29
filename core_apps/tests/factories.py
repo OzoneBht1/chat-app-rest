@@ -40,11 +40,6 @@ class ChatMessageFactory(factory.django.DjangoModelFactory):
 
     sender = factory.SubFactory(UserFactory)
     receiver = factory.SubFactory(UserFactory)
-    content = factory.lazy_attribute(
+    message = factory.lazy_attribute(
         lambda _: faker.sentence(nb_words=10, variable_nb_words=True)
-    )
-    created_at = factory.lazy_attribute(
-        lambda _: faker.date_time_this_year(
-            before_now=True, after_now=False, tzinfo=None
-        )
     )
