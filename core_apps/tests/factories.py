@@ -3,6 +3,8 @@ from django.contrib.auth import get_user_model
 from faker import Faker
 from faker.factory import Factory
 
+from core_apps.chat.models import ChatMessage
+
 
 User = get_user_model()
 
@@ -30,3 +32,19 @@ class UserFactory(factory.django.DjangoModelFactory):
             return manager.create_superuser(*args, **kwargs)
 
         return manager.create_user(*args, **kwargs)
+
+
+class ChatMessageFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ChatMessage
+
+    sender = factory.SubFactory(UserFactory)
+    receiver = factory.SubFactory(UserFactory)
+    content = factory.lazy_attribute(
+        lambda _: faker.sentence(nb_words=10, variable_nb_words=True)
+    )
+    created_at = factory.lazy_attribute(
+        lambda _: faker.date_time_this_year(
+            before_now=True, after_now=False, tzinfo=None
+        )
+    )
