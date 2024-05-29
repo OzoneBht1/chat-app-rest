@@ -9,7 +9,6 @@ from .serializers import ChatMessageSerializer
 
 User = get_user_model()
 
-# Create your views here.
 
 
 class ChatMessageHistoryListApiView(generics.ListAPIView):
