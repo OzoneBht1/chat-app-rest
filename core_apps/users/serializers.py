@@ -65,7 +65,10 @@ class PublicUserInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "username", "email")
+        fields = (
+            "id",
+            "username",
+        )
 
     # def get_full_name(self, obj):
     #     return obj.get_full_name()
